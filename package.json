@@ -1,0 +1,32 @@
+{
+  "name": "pigeon",
+  "version": "0.0.1",
+  "description": "A rest.li client for JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo 'no tests'",
+    "build": "tsc",
+    "build:bundled": "tsc --outFile dist/pigeon.js --module AMD"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxprog/pigeon.git"
+  },
+  "keywords": [
+    "restli",
+    "javascript",
+    "typescript"
+  ],
+  "author": "Matt Hackmann <matt@dxprog.com>",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/dxprog/pigeon/issues"
+  },
+  "homepage": "https://github.com/dxprog/pigeon#readme",
+  "devDependencies": {
+    "typescript": "^3.0.1"
+  },
+  "dependencies": {
+    "es6-promise": "^4.2.4"
+  }
+}

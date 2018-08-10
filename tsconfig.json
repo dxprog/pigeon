@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2015",
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "lib": [
+      "es6", 
+      "dom",
+      "es2015.promise"
+    ],
+    "outDir": "dist"
+  },
+  "include": [
+    "src"
+  ]
+}
