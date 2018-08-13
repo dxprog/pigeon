@@ -1,6 +1,9 @@
 import { IRequestOptions } from './interfaces/IRequestOptions';
 import { IResponse, IResponseFn } from './interfaces/IResponse';
 import { cleanUrl } from './utils/Url';
+import { 
+  ResourceMethod,
+  ResourceMethodToHttpMethod } from './utils/RestliConstants';
 
 export class Pigeon {
   public baseUrl: string;
@@ -13,7 +16,11 @@ export class Pigeon {
     path: string, 
     options: IRequestOptions | null = null
   ) {
-    return this._request('GET', path, options);
+    return this.request(
+      ResourceMethod.GET, 
+      cleanUrl(`${this.baseUrl}/${path}`),
+      options
+    );
   }
 
   batchGet(
@@ -42,7 +49,7 @@ export class Pigeon {
     data: any, 
     options: IRequestOptions | null = null
   ) {
-    return this._request('POST', path, options);
+    return this.request(ResourceMethod.CREATE, path, options);
   }
 
   batchCreate(
@@ -101,15 +108,27 @@ export class Pigeon {
 
   }
 
-  private _request(
-    method: string, 
+  /**
+   * Creates and fires a Rest.li API call
+   * 
+   * @param method The Rest.li resource method to perform
+   * @param url The URL of the API endpoint
+   * @param options Options for the Rest.li call
+   */
+  request(
+    method: ResourceMethod, 
     url: string, 
     options: IRequestOptions | null = null
   ): Promise<IResponse> {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      url = cleanUrl(url);
-      xhr.open(method, url, true);
+      
+      if (!(method in ResourceMethodToHttpMethod)) {
+        reject(new Error(`"${method}" is not a valid restli method`));
+      }
+      const httpMethod = ResourceMethodToHttpMethod[method];
+      
+      xhr.open(httpMethod, url, true);
       xhr.onreadystatechange = () => this._xhrReadyState(xhr, resolve, reject);
       xhr.send();
     });
@@ -124,7 +143,7 @@ export class Pigeon {
       case XMLHttpRequest.DONE:
         this._xhrParseResponse(xhr)
           .then((response: IResponse) => resolve(response))
-          .catch(reject);
+          .catch((...args: any[]) => reject(...args));
         break;
       default:
         break;
