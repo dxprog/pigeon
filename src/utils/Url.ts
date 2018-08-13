@@ -6,6 +6,6 @@
 export function cleanUrl(url: string): string {
   return url
     .split('/')
-    .filter(token => !!token.length)
+    .filter((token, index) => index === 0 || !!token.length)
     .join('/');
 }
